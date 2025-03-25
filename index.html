@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher & Student Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        input, select, button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Enter Data</h2>
+        <select id="userType">
+            <option value="teacher">Teacher</option>
+            <option value="student">Student</option>
+        </select>
+        <input type="number" id="id" placeholder="Enter ID">
+        <input type="text" id="name" placeholder="Enter Name">
+        <input type="text" id="dob" placeholder="Enter DOB (DD/MM/YYYY)">
+        <input type="text" id="extra" placeholder="Enter Salary or Program">
+        <button onclick="addUser()">Add</button>
+
+        <h2>Search by ID</h2>
+        <input type="number" id="searchId" placeholder="Enter ID to Search">
+        <button onclick="searchUser()">Search</button>
+
+        <h2>Data List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>DOB</th>
+                    <th>Salary/Program</th>
+                </tr>
+            </thead>
+            <tbody id="dataList"></tbody>
+        </table>
+    </div>
+
+    <script>
+        let users = [];
+
+        function addUser() {
+            let userType = document.getElementById("userType").value;
+            let id = document.getElementById("id").value;
+            let name = document.getElementById("name").value;
+            let dob = document.getElementById("dob").value;
+            let extra = document.getElementById("extra").value;
+            
+            if (!id || !name || !dob || !extra) {
+                alert("Please fill all fields");
+                return;
+            }
+            
+            users.push({ id, name, dob, extra, type: userType });
+            displayUsers();
+        }
+
+        function displayUsers() {
+            let tableBody = document.getElementById("dataList");
+            tableBody.innerHTML = "";
+            users.forEach(user => {
+                let row = `<tr>
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>${user.dob}</td>
+                    <td>${user.extra}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        function searchUser() {
+            let searchId = document.getElementById("searchId").value;
+            let user = users.find(u => u.id === searchId);
+            if (user) {
+                alert(`ID: ${user.id}\nName: ${user.name}\nDOB: ${user.dob}\n${user.type === "teacher" ? "Salary" : "Program"}: ${user.extra}`);
+            } else {
+                alert("User not found");
+            }
+        }
+    </script>
+</body>
+</html>
